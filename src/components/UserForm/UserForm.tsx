@@ -214,10 +214,7 @@ const FormUser: React.FC<PropsFormUser> = ({
           {error?.message}
         </span>
       ) : null}
-      <Btn
-        stateForm={state.stateForm}
-        isDisabled={handleOnSubmitDisabled() || isLoading}
-      />
+      <Btn isDisabled={handleOnSubmitDisabled() || isLoading} />
     </form>
   );
 };

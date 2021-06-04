@@ -1,5 +1,1 @@
-const home = () => {
-  return <div>DESDE HOOME</div>;
-};
-
-export default home;
+export { default } from '@Views/home';

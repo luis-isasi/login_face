@@ -3,4 +3,9 @@ module.exports = {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      backgroundColor: ['disabled', 'hover'],
+    },
+  },
 };
