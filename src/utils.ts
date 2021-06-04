@@ -10,28 +10,12 @@ export async function fetcher<DataResponse>({
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   body?: any;
 }) {
-  //TODO: agregar un type para user session
-  const tokenFromLS = window.localStorage.getItem(USER_SESSION);
-
-  let token: string | undefined = '';
-  try {
-    token = JSON.parse(tokenFromLS)?.token;
-  } catch (err) {
-    console.error(err);
-    token = '';
-  }
-
-  let headers: { [key: string]: string } = {
+  const headers = {
     'content-type': 'application/json',
   };
 
-  //only there's a token in local storage
-  if (token) {
-    headers = { ...headers, Authorization: `Bearer ${token}` };
-  }
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`,
+    `https://crehana-backend-clone.herokuapp.com/api/v1${endpoint}`,
     {
       method: method,
       body: JSON.stringify(body),

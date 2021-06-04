@@ -16,14 +16,14 @@ export type AuthResponse = {
 const auth = {
   loginUser: async (data: UserAuthData) => {
     return fetcher<AuthResponse>({
-      endpoint: '',
+      endpoint: '/auth/login-user/',
       method: 'POST',
       body: data,
     });
   },
   registerUser: async (data: UserAuthData) => {
     return fetcher<AuthResponse>({
-      endpoint: '',
+      endpoint: '/auth/create-account/',
       method: 'POST',
       body: data,
     });

@@ -1,8 +1,9 @@
 import { useReducer } from 'react';
+import { useMutation } from 'react-query';
 
+import { useContextAuth } from '@Context/contextAuth';
 import FormField from './components/FormField';
 import Btn from './components/Btn';
-import { useMutation } from 'react-query';
 import { PropsFormUser, InitialState, FormAction } from './types';
 
 const initialState: InitialState = {
@@ -52,6 +53,8 @@ const FormUser: React.FC<PropsFormUser> = ({
 }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
+  const { setDataUserLocalStorage } = useContextAuth();
+
   const { isLoading, isError, error, mutate } = useMutation(
     typeForm,
     () => mutation({ email: state.email, password: state.password }),
@@ -68,6 +71,15 @@ const FormUser: React.FC<PropsFormUser> = ({
           type: 'SET_STATE_FORM',
           newState: 'COMPLETED',
         });
+
+        const userData = {
+          token: data.token,
+          email: data.user.email,
+          firstname: data.user.firstname,
+          lastname: data.user.lastname,
+          username: data.user.username,
+        };
+        setDataUserLocalStorage(userData);
         onSuccess();
       },
     }
