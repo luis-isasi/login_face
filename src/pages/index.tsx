@@ -1,5 +1,16 @@
 const Home = () => {
-  return <div className="text-4xl text-red-700">DESDE INDEX</div>;
+  return (
+    <video
+      autoPlay
+      // src={}
+      muted={false}
+      playsInline
+      // ref={(ref) => {
+      //   this.video = ref;
+      // }}
+      className="w-96 h-96"
+    />
+  );
 };
 
 export default Home;
