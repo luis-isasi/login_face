@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .caret-primary {
+    caret-color: #9c86f9;
+  }
+
+  .caret-red {
+    caret-color: red;
+  }
+
+  .scrool-none::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+  }
+
+  .bg-scroolbar-white::-webkit-scrollbar-track {
+    background-color: white;
+  }
+
+  .scroolbar::-webkit-scrollbar-thumb {
+    background-color: #aeaeb1;
+    border-radius: 12px;
+    border: 1px solid white;
+  }
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
