@@ -4,15 +4,10 @@ import { useRouter } from 'next/router';
 import { USER_SESSION } from '@Constants';
 import { User } from '@Types';
 
-//------------types----------
-interface UserLocalStorage extends User {
-  token: string;
-}
-
 interface TypeContextUser {
-  user: UserLocalStorage;
+  user: User;
   signoutUser: () => void;
-  setDataUserLocalStorage: (dataUser: UserLocalStorage) => void;
+  setDataUserLocalStorage: (user: User) => void;
   isLoading: boolean;
 }
 
@@ -21,21 +16,14 @@ const ContextAuth = createContext<TypeContextUser | undefined>(undefined);
 
 //Provider
 export const ContextAuthProvider = ({ children }) => {
-  const [user, setUser] =
-    useState<undefined | null | UserLocalStorage>(undefined);
+  const [user, setUser] = useState<undefined | null | User>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    const dataUser = JSON.parse(localStorage.getItem(USER_SESSION));
-    if (dataUser) {
-      setUser({
-        token: dataUser.token,
-        email: dataUser.email,
-        firstname: dataUser.firstname,
-        lastname: dataUser.lastname,
-        username: dataUser.username,
-      });
+    const user: User = JSON.parse(localStorage.getItem(USER_SESSION));
+    if (user) {
+      setUser(user);
     } else {
       setUser(null);
     }
@@ -43,9 +31,9 @@ export const ContextAuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const setDataUserLocalStorage = (dataUser: UserLocalStorage) => {
-    localStorage.setItem(USER_SESSION, JSON.stringify(dataUser));
-    setUser(dataUser);
+  const setDataUserLocalStorage = (user: User) => {
+    localStorage.setItem(USER_SESSION, JSON.stringify(user));
+    setUser(user);
   };
 
   const signoutUser = () => {

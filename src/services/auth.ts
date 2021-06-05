@@ -1,31 +1,22 @@
 import { fetcher } from '@Utils';
-import { User } from '@Types';
 
 export type UserAuthData = {
   email: string;
   password: string;
 };
 
-export type AuthResponse = {
-  refreshToken: string;
-  statusCode: number;
-  token: string;
-  user: User;
-};
-
 const auth = {
-  loginUser: async (data: UserAuthData) => {
-    return fetcher<AuthResponse>({
-      endpoint: '/auth/login-user/',
+  AddUser: async (data: UserAuthData) => {
+    return fetcher({
+      endpoint: '/usuario',
       method: 'POST',
       body: data,
     });
   },
-  registerUser: async (data: UserAuthData) => {
-    return fetcher<AuthResponse>({
-      endpoint: '/auth/create-account/',
+  findByUsuario: async (user: string) => {
+    return fetcher({
+      endpoint: `/usuario/:${user}`,
       method: 'POST',
-      body: data,
     });
   },
 };

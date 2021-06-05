@@ -43,12 +43,6 @@ const Login = () => {
           </span>
         </div>
       </div>
-      <style global jsx>{`
-        body {
-          //bg-base-main
-          background-color: rgba(24, 27, 50, 1) !important;
-        }
-      `}</style>
     </div>
   );
 };

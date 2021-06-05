@@ -72,14 +72,7 @@ const FormUser: React.FC<PropsFormUser> = ({
           newState: 'COMPLETED',
         });
 
-        const userData = {
-          token: data.token,
-          email: data.user.email,
-          firstname: data.user.firstname,
-          lastname: data.user.lastname,
-          username: data.user.username,
-        };
-        setDataUserLocalStorage(userData);
+        // setDataUserLocalStorage(userData);
         onSuccess();
       },
     }
@@ -196,8 +189,8 @@ const FormUser: React.FC<PropsFormUser> = ({
   return (
     <form className="flex flex-col w-full mt-4" onSubmit={handleOnSubmit}>
       <FormField
-        name="email"
-        textLabel="Correo"
+        name="name"
+        textLabel="Nombre"
         value={state.email}
         onChange={handleChangeInput}
         errorMessage={state.errors.email}

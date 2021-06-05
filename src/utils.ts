@@ -1,4 +1,4 @@
-import { USER_SESSION } from '@Constants';
+// import { USER_SESSION } from '@Constants';
 
 //FETCHER
 export async function fetcher<DataResponse>({
@@ -15,7 +15,7 @@ export async function fetcher<DataResponse>({
   };
 
   const response = await fetch(
-    `https://crehana-backend-clone.herokuapp.com/api/v1${endpoint}`,
+    `https://api-login-register.herokuapp.com${endpoint}`,
     {
       method: method,
       body: JSON.stringify(body),
