@@ -31,5 +31,5 @@ export async function fetcher<DataResponse>({
     throw new Error(res.data.error);
   }
 
-  return res.data as DataResponse;
+  return res;
 }

@@ -9,13 +9,16 @@ import { useMutation } from 'react-query';
 import { uploadImage } from '../../firebase/client';
 
 const Register = () => {
+  const [stepRegister, setStepRegister] = useState<1 | 2>(1);
+
   const [imgSrc, setImgSrc] = useState(null);
   const [task, setTask] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
 
   const router = useRouter();
   const onSuccess = () => {
-    router.push('/home');
+    // mostramos el compoente para rel reconociemiento facial
+    setStepRegister(2);
   };
 
   const onError = () => {
@@ -104,7 +107,7 @@ const Register = () => {
             onError={onError}
           />
         </div>
-        <div className="bg-yellow-300 h-40 w-full">
+        {/* <div className="bg-yellow-300 h-40 w-full">
           <Webcam
             audio={false}
             height={720}
@@ -116,7 +119,7 @@ const Register = () => {
           <button onClick={capture}>Capture photo</button>
           <img src={imgSrc} alt="sfas" />
           <img src={imgUrl} alt="sfas" />
-        </div>
+        </div> */}
         <div className="mt-5">
           <span className="text-white text-xs">
             ¿Ya tienes una cuenta?

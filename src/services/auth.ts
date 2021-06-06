@@ -1,22 +1,24 @@
 import { fetcher } from '@Utils';
+import { UserForm } from '@Types';
 
-export type UserAuthData = {
-  email: string;
-  password: string;
-};
+export interface ResponseAddUser {
+  mensaje: string;
+  userId: string;
+  usuario: string;
+}
 
 const auth = {
-  AddUser: async (data: UserAuthData) => {
-    return fetcher({
+  AddUser: async (user: UserForm) => {
+    return fetcher<ResponseAddUser>({
       endpoint: '/usuario',
       method: 'POST',
-      body: data,
+      body: user,
     });
   },
-  findByUsuario: async (user: string) => {
+  findByUsuario: async (usuario: string) => {
     return fetcher({
-      endpoint: `/usuario/:${user}`,
-      method: 'POST',
+      endpoint: `/usuario/${usuario}`,
+      method: 'GET',
     });
   },
 };

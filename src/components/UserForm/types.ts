@@ -1,29 +1,22 @@
-import { User } from '@Types';
+import { UserForm } from '@Types';
 
-import { UserAuthData, AuthResponse } from '../../services/auth';
+import { ResponseAddUser } from '../../services/auth';
 
 export interface PropsFormUser {
   typeForm: 'login' | 'register';
-  mutation: (data: UserAuthData) => Promise<AuthResponse>;
-  isChecked?: boolean;
+  mutation: (userForm: UserForm) => Promise<ResponseAddUser>;
   onSuccess?: () => void;
   onError?: () => void;
 }
 
-export type StateForm =
-  | 'INITIAL'
-  | 'READYFORSUBMIT'
-  | 'LOADING'
-  | 'ERROR'
-  | 'COMPLETED';
+export type StateForm = 'INITIAL' | 'READYFORCONTINUE' | 'LOADING' | 'ERROR';
 
 export interface InitialState {
-  email: string;
+  nameUser: string;
   password: string;
   stateForm: StateForm;
   errors: {
-    error: string;
-    email: string;
+    nameUser: string;
     password: string;
   };
 }
@@ -47,11 +40,3 @@ export type FormAction =
       type: 'SET_STATE_FORM';
       newState: StateForm;
     };
-
-//types for backend's data
-export interface LoginRegister {
-  refreshToken: string;
-  statusCode: number;
-  token: string;
-  user: User;
-}

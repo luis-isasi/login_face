@@ -1,18 +1,19 @@
-import { useReducer } from 'react';
-import { useMutation } from 'react-query';
+import { useReducer, useCallback } from 'react';
+import { useQueryClient, useMutation } from 'react-query';
+import debounce from 'lodash/debounce';
 
-import { useContextAuth } from '@Context/contextAuth';
+import Auth from '@Services/auth';
+import ApiFace from '@Services/apiFace';
 import FormField from './components/FormField';
 import Btn from './components/Btn';
 import { PropsFormUser, InitialState, FormAction } from './types';
 
 const initialState: InitialState = {
-  email: '',
+  nameUser: '',
   password: '',
   stateForm: 'INITIAL',
   errors: {
-    error: '',
-    email: '',
+    nameUser: '',
     password: '',
   },
 };
@@ -33,7 +34,6 @@ const formReducer = (state: InitialState, action: FormAction) => {
         ...state,
         errors: { ...state.errors, [action.nameError]: '' },
       };
-
     case 'SET_STATE_FORM':
       return {
         ...state,
@@ -47,36 +47,21 @@ const formReducer = (state: InitialState, action: FormAction) => {
 const FormUser: React.FC<PropsFormUser> = ({
   typeForm,
   mutation,
-  isChecked,
   onSuccess,
   onError,
 }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-
-  const { setDataUserLocalStorage } = useContextAuth();
-
-  const { isLoading, isError, error, mutate } = useMutation(
-    typeForm,
-    () => mutation({ email: state.email, password: state.password }),
-    {
-      onError: () => {
-        dispatch({
-          type: 'SET_STATE_FORM',
-          newState: 'ERROR',
-        });
-        onError();
-      },
-      onSuccess: (data) => {
-        dispatch({
-          type: 'SET_STATE_FORM',
-          newState: 'COMPLETED',
-        });
-
-        // setDataUserLocalStorage(userData);
-        onSuccess();
-      },
-    }
+  const queryClient = useQueryClient();
+  const {
+    data,
+    isLoading,
+    isError,
+    mutate: mutateCreatePerson,
+  } = useMutation('register', () =>
+    ApiFace.createNewPerson({ namePerson: state.nameUser })
   );
+
+  console.log({ state });
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,8 +70,42 @@ const FormUser: React.FC<PropsFormUser> = ({
       newState: 'LOADING',
     });
 
-    mutate();
+    //create a new person
+    mutateCreatePerson();
   };
+
+  const validateName = useCallback(
+    debounce(async (nameUser: string) => {
+      if (!nameUser) {
+        dispatch({
+          type: 'SET_ERROR',
+          nameError: 'nameUser',
+          message: 'Campo requerido',
+        });
+        return;
+      }
+
+      const data = await queryClient.fetchQuery('finByUser', () =>
+        Auth.findByUsuario(nameUser)
+      );
+
+      if (data) {
+        //add the error
+        dispatch({
+          type: 'SET_ERROR',
+          nameError: 'nameUser',
+          message: 'El nombre no se encuentra disponible.',
+        });
+      } else {
+        //clean the error
+        dispatch({
+          type: 'CLEAN_ERROR',
+          nameError: 'nameUser',
+        });
+      }
+    }, 300),
+    []
+  );
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -97,48 +116,14 @@ const FormUser: React.FC<PropsFormUser> = ({
       value,
     });
 
-    if (state.errors.error) {
-      dispatch({
-        type: 'CLEAN_ERROR',
-        nameError: 'error',
-      });
-    }
-
-    if (name === 'email') {
-      //Validate input email
-      validateEmail(name, value);
+    if (name === 'nameUser') {
+      //Validate input password
+      validateName(value);
     }
 
     if (name === 'password') {
       //Validate input password
       validatePassword(name, value);
-    }
-  };
-
-  const validateEmail = (name: string, value: string) => {
-    if (!value) {
-      dispatch({
-        type: 'SET_ERROR',
-        nameError: name,
-        message: 'Campo requerido',
-      });
-      return;
-    }
-
-    const emailRegex =
-      /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
-
-    if (emailRegex.test(value)) {
-      dispatch({
-        type: 'CLEAN_ERROR',
-        nameError: name,
-      });
-    } else {
-      dispatch({
-        type: 'SET_ERROR',
-        nameError: name,
-        message: 'Por favor, ingresa un email válido.',
-      });
     }
   };
 
@@ -167,33 +152,26 @@ const FormUser: React.FC<PropsFormUser> = ({
   };
 
   const handleOnSubmitDisabled = () => {
-    //el prop isChecked a veces puede ser undefined, en ese momento no nos interesa evaluarlo
-    //cuando lleva un valor booleano debemos verificar que sea true para poder habilitar el button
-    //entonces si es undefined  o si es true habilitamos el button submit
     if (
-      !state.errors.email &&
+      !state.errors.nameUser &&
       !state.errors.password &&
-      !state.errors.error &&
-      state.email &&
-      state.password &&
-      !isLoading
+      state.nameUser &&
+      state.password
     ) {
-      if (isChecked === undefined || isChecked === true) {
-        return false;
-      }
-
+      return false;
+    } else {
       return true;
-    } else return true;
+    }
   };
 
   return (
     <form className="flex flex-col w-full mt-4" onSubmit={handleOnSubmit}>
       <FormField
-        name="name"
+        name="nameUser"
         textLabel="Nombre"
-        value={state.email}
+        value={state.nameUser}
         onChange={handleChangeInput}
-        errorMessage={state.errors.email}
+        errorMessage={state.errors.nameUser}
       />
       <FormField
         name="password"
@@ -202,12 +180,7 @@ const FormUser: React.FC<PropsFormUser> = ({
         onChange={handleChangeInput}
         errorMessage={state.errors.password}
       />
-      {isError ? (
-        <span className="text-red-500 text-center font-semibold text-xs my-3">
-          {error?.message}
-        </span>
-      ) : null}
-      <Btn isDisabled={handleOnSubmitDisabled() || isLoading} />
+      <Btn isDisabled={handleOnSubmitDisabled()} />
     </form>
   );
 };
