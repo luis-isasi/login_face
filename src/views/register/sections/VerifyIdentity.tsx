@@ -22,6 +22,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
   const [imgUrl, setImgUrl] = useState<string>(undefined);
 
   const webcamRef = useRef(null);
+  //Add image to person
   const {
     data,
     isLoading,

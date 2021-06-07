@@ -1,5 +1,8 @@
 // import { UserForm } from '@Types';
 
+//constantes
+const PERSONS_GROUP = 'users';
+
 export interface ResponseAddUser {
   mensaje: string;
   userId: string;
@@ -37,13 +40,16 @@ async function fetcherApiFace({
     throw new Error(res.error.message);
   }
 
+  if (res === undefined) {
+    return {};
+  }
   return res;
 }
 
 const apiFace = {
   createNewPerson: ({ personId }: { personId: string }) => {
     return fetcherApiFace({
-      endpoint: '/persongroups/users/persons',
+      endpoint: `/persongroups/${PERSONS_GROUP}/persons`,
       method: 'POST',
       body: {
         name: personId,
@@ -53,11 +59,17 @@ const apiFace = {
   },
   addImgToPerson: ({ url, personId }: { url: string; personId: string }) => {
     return fetcherApiFace({
-      endpoint: `/persongroups/users/persons/${personId}/persistedFaces`,
+      endpoint: `/persongroups/${PERSONS_GROUP}/persons/${personId}/persistedFaces`,
       method: 'POST',
       body: {
         url,
       },
+    });
+  },
+  trainPersonsGroup: () => {
+    return fetcherApiFace({
+      endpoint: `/persongroups/${PERSONS_GROUP}/train`,
+      method: 'POST',
     });
   },
 };

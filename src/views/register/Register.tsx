@@ -5,10 +5,10 @@ import UserForm from '@Components/UserForm';
 import Auth from '@Services/auth';
 import Link from '@Components/Links/Link';
 import VerifyIdentity from './sections/VerifyIdentity';
-import { useMutation } from 'react-query';
+import SuccessRegister from './sections/SuccessRegister';
 
 const Register = () => {
-  const [stepRegister, setStepRegister] = useState<1 | 2>(1);
+  const [stepRegister, setStepRegister] = useState<1 | 2 | 3>(1);
   const [personId, setPersonId] = useState<string>(undefined);
 
   const router = useRouter();
@@ -24,6 +24,10 @@ const Register = () => {
   };
 
   const onSuccessVerifyIdentity = () => {
+    setStepRegister(3);
+  };
+
+  const onSuccess = () => {
     router.push('/home');
   };
 
@@ -53,6 +57,7 @@ const Register = () => {
             personId={personId}
           />
         )}
+        {stepRegister === 3 && <SuccessRegister onSuccess={onSuccess} />}
         <div className="mt-5">
           <span className="text-white text-xs">
             ¿Ya tienes una cuenta?

@@ -1,5 +1,5 @@
 import { fetcher } from '@Utils';
-import { UserForm } from '@Types';
+import { UserLogin, UserRegister } from '@Types';
 
 export interface ResponseAddUser {
   mensaje: string;
@@ -8,9 +8,16 @@ export interface ResponseAddUser {
 }
 
 const auth = {
-  AddUser: async (user: UserForm) => {
+  loginUser: async (user: UserLogin) => {
     return fetcher<ResponseAddUser>({
-      endpoint: '/usuario',
+      endpoint: '/login',
+      method: 'POST',
+      body: user,
+    });
+  },
+  registerUser: async (user: UserRegister) => {
+    return fetcher<ResponseAddUser>({
+      endpoint: '/register',
       method: 'POST',
       body: user,
     });
