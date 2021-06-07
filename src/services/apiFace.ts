@@ -38,6 +38,23 @@ async function fetcherApiFace<DataResponse>({
 }
 
 const apiFace = {
+  verifyIdentity: ({
+    faceId,
+    personId,
+  }: {
+    faceId: string;
+    personId: string;
+  }) => {
+    return fetcherApiFace({
+      endpoint: '/verify',
+      method: 'POST',
+      body: {
+        faceId,
+        personId,
+        personGroupId: 'users',
+      },
+    });
+  },
   createNewPerson: ({ personId }: { personId: string }) => {
     return fetcherApiFace<{ personId: string }>({
       endpoint: `/persongroups/${PERSONS_GROUP}/persons`,
