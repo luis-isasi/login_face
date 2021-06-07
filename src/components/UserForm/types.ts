@@ -1,11 +1,8 @@
-import { UserForm } from '@Types';
-
-import { ResponseAddUser } from '../../services/auth';
+import { UserRegister } from '@Types';
 
 export interface PropsFormUser {
   typeForm: 'login' | 'register';
-  mutation: (userForm: UserForm) => Promise<ResponseAddUser>;
-  onSuccess?: ({ personId: string }) => void;
+  onSuccess?: ({ usuario, contraseña, personId }: UserRegister) => void;
   onError?: () => void;
 }
 

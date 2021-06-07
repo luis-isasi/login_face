@@ -31,7 +31,7 @@ export async function fetcher<DataResponse>({
     throw new Error(res.data.error);
   }
 
-  return res;
+  return res as DataResponse;
 }
 
 export const uploadImageFirebase = () => {};

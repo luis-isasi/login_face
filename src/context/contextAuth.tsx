@@ -2,12 +2,12 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { USER_SESSION } from '@Constants';
-import { User } from '@Types';
+import { UserLocalStorage } from '@Types';
 
 interface TypeContextUser {
-  user: User;
+  user: UserLocalStorage;
   signoutUser: () => void;
-  setDataUserLocalStorage: (user: User) => void;
+  setDataUserLocalStorage: (user: UserLocalStorage) => void;
   isLoading: boolean;
 }
 
@@ -16,12 +16,15 @@ const ContextAuth = createContext<TypeContextUser | undefined>(undefined);
 
 //Provider
 export const ContextAuthProvider = ({ children }) => {
-  const [user, setUser] = useState<undefined | null | User>(undefined);
+  const [user, setUser] =
+    useState<undefined | null | UserLocalStorage>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    const user: User = JSON.parse(localStorage.getItem(USER_SESSION));
+    const user: UserLocalStorage = JSON.parse(
+      localStorage.getItem(USER_SESSION)
+    );
     if (user) {
       setUser(user);
     } else {
@@ -31,7 +34,7 @@ export const ContextAuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const setDataUserLocalStorage = (user: User) => {
+  const setDataUserLocalStorage = (user: UserLocalStorage) => {
     localStorage.setItem(USER_SESSION, JSON.stringify(user));
     setUser(user);
   };

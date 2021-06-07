@@ -1,37 +1,52 @@
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
+import { UserRegister } from '@Types';
 import ApiFace from '@Services/apiFace';
 import Auth from '@Services/auth';
+import { useContextAuth } from '@Context/contextAuth';
 
 interface Props {
   onSuccess: () => void;
+  userData: UserRegister;
 }
 
-const SuccessRegister: React.FC<Props> = ({ onSuccess }) => {
+const SuccessRegister: React.FC<Props> = ({ onSuccess, userData }) => {
   // Train Persons group
-  const { data, isLoading, isError, mutate } = useMutation(
-    'trainPersonsGroup',
-    () => ApiFace.trainPersonsGroup()
+  const { mutate: mutateTrain } = useMutation('trainPersonsGroup', () =>
+    ApiFace.trainPersonsGroup()
   );
+  const { setDataUserLocalStorage } = useContextAuth();
 
-  // const { data, isLoading, isError, mutate } = useMutation(
-  //   'trainPersonsGroup',
-  //   () => Auth.registerUser({})
-  // );
+  //Register User
+  const {
+    // data,
+    isLoading,
+    // isError,
+    isSuccess,
+    mutate: mutateRegister,
+  } = useMutation(() => Auth.registerUser(userData), {
+    onSuccess: (data) => {
+      setDataUserLocalStorage({
+        personId: userData.personId,
+        userId: data._id,
+        usuario: data.usuario,
+      });
+      onSuccess();
+    },
+  });
 
   useEffect(() => {
-    mutate();
+    mutateTrain();
+    mutateRegister();
   }, []);
 
-  console.log({ data });
-  console.log({ isLoading });
-  console.log({ isError });
-
   return (
-    <div className="text-white">
-      {isLoading && <p>CARGANDO...</p>}
-      {!isLoading && <p>REGISTRO COMPLETADO</p>}
+    <div className="text-white ">
+      <p className="text-green-500 font-semibold text-base text-center w-full h-auto py-2">
+        {isLoading && 'CARGANDO...'}
+        {isSuccess && 'REGISTRO COMPLETADO'}
+      </p>
     </div>
   );
 };

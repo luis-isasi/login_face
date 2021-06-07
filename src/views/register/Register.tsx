@@ -2,19 +2,22 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import UserForm from '@Components/UserForm';
-import Auth from '@Services/auth';
 import Link from '@Components/Links/Link';
 import VerifyIdentity from './sections/VerifyIdentity';
 import SuccessRegister from './sections/SuccessRegister';
+import { UserRegister } from '@Types';
 
 const Register = () => {
   const [stepRegister, setStepRegister] = useState<1 | 2 | 3>(1);
-  const [personId, setPersonId] = useState<string>(undefined);
-
+  const [userData, setUserData] = useState<UserRegister | undefined>(undefined);
   const router = useRouter();
 
-  const onSuccessUserForm = ({ personId }: { personId: string }) => {
-    setPersonId(personId);
+  const onSuccessUserForm = ({
+    usuario,
+    contraseña,
+    personId,
+  }: UserRegister) => {
+    setUserData({ usuario, contraseña, personId });
     // mostramos el compoente para rel reconociemiento facial
     setStepRegister(2);
   };
@@ -43,7 +46,6 @@ const Register = () => {
             </p>
             <div className="min-w-0 w-full max-w-xs">
               <UserForm
-                mutation={Auth.AddUser}
                 typeForm="register"
                 onSuccess={onSuccessUserForm}
                 onError={onErrorUserForm}
@@ -51,13 +53,15 @@ const Register = () => {
             </div>
           </>
         )}
-        {stepRegister === 2 && personId && (
+        {stepRegister === 2 && userData && (
           <VerifyIdentity
             onSuccess={onSuccessVerifyIdentity}
-            personId={personId}
+            personId={userData?.personId}
           />
         )}
-        {stepRegister === 3 && <SuccessRegister onSuccess={onSuccess} />}
+        {stepRegister === 3 && (
+          <SuccessRegister userData={userData} onSuccess={onSuccess} />
+        )}
         <div className="mt-5">
           <span className="text-white text-xs">
             ¿Ya tienes una cuenta?

@@ -25,12 +25,7 @@ const Login = () => {
           Que bueno verte otra vez :)
         </p>
         <div className="min-w-0 w-full max-w-xs">
-          <UserForm
-            mutation={Auth.loginUser}
-            typeForm="login"
-            onSuccess={onSuccess}
-            onError={onError}
-          />
+          <UserForm typeForm="login" onSuccess={onSuccess} onError={onError} />
         </div>
         <div className="mt-5">
           <span className="text-white text-xs">

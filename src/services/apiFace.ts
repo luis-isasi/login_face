@@ -3,13 +3,7 @@
 //constantes
 const PERSONS_GROUP = 'users';
 
-export interface ResponseAddUser {
-  mensaje: string;
-  userId: string;
-  usuario: string;
-}
-
-async function fetcherApiFace({
+async function fetcherApiFace<DataResponse>({
   endpoint,
   method = 'GET',
   body,
@@ -40,10 +34,7 @@ async function fetcherApiFace({
     throw new Error(res.error.message);
   }
 
-  if (res === undefined) {
-    return {};
-  }
-  return res;
+  return res as DataResponse;
 }
 
 const apiFace = {
@@ -58,7 +49,7 @@ const apiFace = {
     });
   },
   addImgToPerson: ({ url, personId }: { url: string; personId: string }) => {
-    return fetcherApiFace({
+    return fetcherApiFace<{ persistedFaceId: string }>({
       endpoint: `/persongroups/${PERSONS_GROUP}/persons/${personId}/persistedFaces`,
       method: 'POST',
       body: {

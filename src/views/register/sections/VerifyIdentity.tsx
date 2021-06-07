@@ -29,9 +29,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
     isError,
     mutate: addImgToPerson,
     error,
-  } = useMutation<{ persistedFaceId: string }>(() =>
-    ApiFace.addImgToPerson({ url: imgUrl, personId })
-  );
+  } = useMutation(() => ApiFace.addImgToPerson({ url: imgUrl, personId }));
 
   useEffect(() => {
     if (data && !isLoading && !isError) {

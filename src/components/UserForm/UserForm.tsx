@@ -46,7 +46,6 @@ const formReducer = (state: InitialState, action: FormAction) => {
 
 const FormUser: React.FC<PropsFormUser> = ({
   typeForm,
-  mutation,
   onSuccess,
   onError,
 }) => {
@@ -61,7 +60,11 @@ const FormUser: React.FC<PropsFormUser> = ({
     () => ApiFace.createNewPerson({ personId: state.nameUser }),
     {
       onSuccess: (data) => {
-        onSuccess({ personId: data.personId });
+        onSuccess({
+          personId: data.personId,
+          usuario: state.nameUser,
+          contraseña: state.password,
+        });
       },
       onError: () => {
         onError();
