@@ -41,13 +41,22 @@ async function fetcherApiFace({
 }
 
 const apiFace = {
-  createNewPerson: ({ namePerson }: { namePerson: string }) => {
+  createNewPerson: ({ personId }: { personId: string }) => {
     return fetcherApiFace({
       endpoint: '/persongroups/users/persons',
       method: 'POST',
       body: {
-        name: namePerson,
+        name: personId,
         userData: 'User-provided data attached to the person.',
+      },
+    });
+  },
+  addImgToPerson: ({ url, personId }: { url: string; personId: string }) => {
+    return fetcherApiFace({
+      endpoint: `/persongroups/users/persons/${personId}/persistedFaces`,
+      method: 'POST',
+      body: {
+        url,
       },
     });
   },

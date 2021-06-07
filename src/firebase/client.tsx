@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { useState } from 'react';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -20,7 +21,6 @@ if (!firebase.apps.length) {
 export const uploadImage = (file) => {
   const ref = firebase.storage().ref(`images/${file.name}`);
 
-  // ref.put(file) retorna la tarea que se esta haciendo, con esto podemos manejar errores, controlar eventos, etc.
   const task = ref.put(file);
 
   return task;

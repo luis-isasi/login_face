@@ -33,3 +33,5 @@ export async function fetcher<DataResponse>({
 
   return res;
 }
+
+export const uploadImageFirebase = () => {};

@@ -5,7 +5,7 @@ import { ResponseAddUser } from '../../services/auth';
 export interface PropsFormUser {
   typeForm: 'login' | 'register';
   mutation: (userForm: UserForm) => Promise<ResponseAddUser>;
-  onSuccess?: () => void;
+  onSuccess?: ({ personId: string }) => void;
   onError?: () => void;
 }
 

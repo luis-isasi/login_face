@@ -55,13 +55,20 @@ const FormUser: React.FC<PropsFormUser> = ({
   const {
     data,
     isLoading,
-    isError,
     mutate: mutateCreatePerson,
-  } = useMutation('register', () =>
-    ApiFace.createNewPerson({ namePerson: state.nameUser })
+  } = useMutation<{ personId: string }>(
+    'createNewPerson',
+    () => ApiFace.createNewPerson({ personId: state.nameUser }),
+    {
+      onSuccess: (data) => {
+        onSuccess({ personId: data.personId });
+      },
+      onError: () => {
+        onError();
+      },
+    }
   );
-
-  console.log({ state });
+  console.log({ data });
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -180,7 +187,7 @@ const FormUser: React.FC<PropsFormUser> = ({
         onChange={handleChangeInput}
         errorMessage={state.errors.password}
       />
-      <Btn isDisabled={handleOnSubmitDisabled()} />
+      <Btn isDisabled={handleOnSubmitDisabled() || isLoading} />
     </form>
   );
 };
