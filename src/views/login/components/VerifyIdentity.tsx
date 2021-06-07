@@ -44,8 +44,12 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
     isSuccess: isSuccessVerifyIdentity,
     mutate: verifyFace,
   } = useMutation(() => ApiFace.verifyIdentity({ faceId, personId }), {
-    onSuccess: () => {
-      onSuccess();
+    onSuccess: (data) => {
+      if (data.isIdentical) {
+        onSuccess();
+      } else {
+        setErrorMessage('Tu rostro no coincide 😕');
+      }
     },
   });
 
@@ -124,11 +128,17 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
             : 'text-green-500'
         } font-semibold text-base text-center w-full h-auto py-2`}
       >
-        {isLoadingDetectFace && 'Detectando tu rostro...'}
-        {errorDetectFace && `${errorDetectFace?.message}`}
-        {isLoadingVerifyIdentity && 'Verificando tu rostro...'}
-        {errorVerifyIdentity && `${errorVerifyIdentity?.message}`}
-        {isSuccessVerifyIdentity && 'Rostro verificado exitosamente. :D'}
+        {isLoadingDetectFace
+          ? 'Detectando tu rostro...'
+          : errorDetectFace
+          ? `${errorDetectFace?.message}`
+          : isLoadingVerifyIdentity
+          ? 'Verificando tu rostro...'
+          : errorVerifyIdentity
+          ? `${errorVerifyIdentity?.message}`
+          : isSuccessVerifyIdentity && !errorMessage
+          ? 'Rostro verificado exitosamente. :D'
+          : ''}
         {errorMessage}
       </p>
       {imgUrl && <img className="my-2 rounded-md" src={imgUrl} alt={imgUrl} />}

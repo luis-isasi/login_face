@@ -16,12 +16,13 @@ const App = () => {
         </span>
         <p className="text-center text-lg my-8">
           My Face detector es una aplicación para registrarse e iniciar sesión
-          con reconocimiento facial, usando la camara de tu dispositivo, se usa
+          con reconocimiento facial, usando la camara de tu dispositivo, usando
           la{' '}
           <a
             target="_blank"
             href="https://docs.microsoft.com/es-es/azure/cognitive-services/face/overview"
             rel="noreferrer"
+            className="font-extrabold text-green-500"
           >
             Api face de Microsoft Azure
           </a>
