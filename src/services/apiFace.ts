@@ -34,7 +34,7 @@ async function fetcherApiFace({
   //no necesitamos retornar todo el objeto de error ya que react-query solo necesita el mensaje de error
   //quizas en otro proyecto sin react-query, si, se deba retornar
   if (!response.ok) {
-    throw new Error(res.data.error);
+    throw new Error(res.error.message);
   }
 
   return res;

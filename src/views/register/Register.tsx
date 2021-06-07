@@ -13,16 +13,18 @@ const Register = () => {
 
   const router = useRouter();
 
-  console.log({ personId });
-
-  const onSuccess = ({ personId }: { personId: string }) => {
+  const onSuccessUserForm = ({ personId }: { personId: string }) => {
     setPersonId(personId);
     // mostramos el compoente para rel reconociemiento facial
     setStepRegister(2);
   };
 
-  const onError = () => {
+  const onErrorUserForm = () => {
     console.error('error');
+  };
+
+  const onSuccessVerifyIdentity = () => {
+    router.push('/home');
   };
 
   return (
@@ -39,14 +41,17 @@ const Register = () => {
               <UserForm
                 mutation={Auth.AddUser}
                 typeForm="register"
-                onSuccess={onSuccess}
-                onError={onError}
+                onSuccess={onSuccessUserForm}
+                onError={onErrorUserForm}
               />
             </div>
           </>
         )}
         {stepRegister === 2 && personId && (
-          <VerifyIdentity personId={personId} />
+          <VerifyIdentity
+            onSuccess={onSuccessVerifyIdentity}
+            personId={personId}
+          />
         )}
         <div className="mt-5">
           <span className="text-white text-xs">
