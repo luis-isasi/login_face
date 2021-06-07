@@ -1,9 +1,7 @@
-import { useReducer, useCallback } from 'react';
-import { useQueryClient, useMutation } from 'react-query';
-import debounce from 'lodash/debounce';
+import { useReducer } from 'react';
+import { useMutation } from 'react-query';
 
 import Auth from '@Services/auth';
-import ApiFace from '@Services/apiFace';
 import FormField from './components/FormField';
 import Btn from './components/Btn';
 import { PropsFormUser, InitialState, FormAction } from './types';
@@ -44,34 +42,26 @@ const formReducer = (state: InitialState, action: FormAction) => {
   }
 };
 
-const FormUser: React.FC<PropsFormUser> = ({
+const FormLogin: React.FC<PropsFormUser> = ({
   typeForm,
   onSuccess,
   onError,
 }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-  const queryClient = useQueryClient();
-  const {
-    data,
-    isLoading,
-    mutate: mutateCreatePerson,
-  } = useMutation<{ personId: string }>(
+
+  const { isLoading, mutate: mutateCreatePerson } = useMutation(
     'createNewPerson',
-    () => ApiFace.createNewPerson({ personId: state.nameUser }),
+    () =>
+      Auth.loginUser({ usuario: state.nameUser, contraseña: state.password }),
     {
       onSuccess: (data) => {
-        onSuccess({
-          personId: data.personId,
-          usuario: state.nameUser,
-          contraseña: state.password,
-        });
+        onSuccess(data);
       },
       onError: () => {
         onError();
       },
     }
   );
-  console.log({ data });
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,39 +74,6 @@ const FormUser: React.FC<PropsFormUser> = ({
     mutateCreatePerson();
   };
 
-  const validateName = useCallback(
-    debounce(async (nameUser: string) => {
-      if (!nameUser) {
-        dispatch({
-          type: 'SET_ERROR',
-          nameError: 'nameUser',
-          message: 'Campo requerido',
-        });
-        return;
-      }
-
-      const data = await queryClient.fetchQuery('finByUser', () =>
-        Auth.findByUsuario(nameUser)
-      );
-
-      if (data) {
-        //add the error
-        dispatch({
-          type: 'SET_ERROR',
-          nameError: 'nameUser',
-          message: 'El nombre no se encuentra disponible.',
-        });
-      } else {
-        //clean the error
-        dispatch({
-          type: 'CLEAN_ERROR',
-          nameError: 'nameUser',
-        });
-      }
-    }, 300),
-    []
-  );
-
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -128,12 +85,28 @@ const FormUser: React.FC<PropsFormUser> = ({
 
     if (name === 'nameUser') {
       //Validate input password
-      validateName(value);
+      validateName(name, value);
     }
 
     if (name === 'password') {
       //Validate input password
       validatePassword(name, value);
+    }
+  };
+
+  const validateName = (name: string, value: string) => {
+    if (!value) {
+      dispatch({
+        type: 'SET_ERROR',
+        nameError: name,
+        message: 'Campo requerido',
+      });
+      return;
+    } else {
+      dispatch({
+        type: 'CLEAN_ERROR',
+        nameError: name,
+      });
     }
   };
 
@@ -195,4 +168,4 @@ const FormUser: React.FC<PropsFormUser> = ({
   );
 };
 
-export default FormUser;
+export default FormLogin;

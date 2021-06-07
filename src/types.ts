@@ -3,6 +3,13 @@ export interface UserLocalStorage {
   userId: string;
   personId: string;
 }
+export interface UserResponse {
+  _id: string;
+  usuario: string;
+  contraseña: string;
+  personId: string;
+  __v: number;
+}
 
 export interface UserLogin {
   usuario: string;

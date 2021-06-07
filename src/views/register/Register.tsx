@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import UserForm from '@Components/UserForm';
+import FormRegister from '@Components/FormUser/FormRegister';
 import Link from '@Components/Links/Link';
 import VerifyIdentity from './sections/VerifyIdentity';
 import SuccessRegister from './sections/SuccessRegister';
@@ -45,7 +45,7 @@ const Register = () => {
               de usuario
             </p>
             <div className="min-w-0 w-full max-w-xs">
-              <UserForm
+              <FormRegister
                 typeForm="register"
                 onSuccess={onSuccessUserForm}
                 onError={onErrorUserForm}

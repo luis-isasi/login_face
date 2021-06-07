@@ -1,24 +1,16 @@
 import { fetcher } from '@Utils';
-import { UserLogin, UserRegister } from '@Types';
-
-export interface ResponseUser {
-  _id: string;
-  usuario: string;
-  contraseña: string;
-  personId: string;
-  __v: number;
-}
+import { UserLogin, UserRegister, UserResponse } from '@Types';
 
 const auth = {
   loginUser: async (user: UserLogin) => {
-    return fetcher<ResponseUser>({
+    return fetcher<UserResponse>({
       endpoint: '/login',
       method: 'POST',
       body: user,
     });
   },
   registerUser: async (user: UserRegister) => {
-    return fetcher<ResponseUser>({
+    return fetcher<UserResponse>({
       endpoint: '/register',
       method: 'POST',
       body: user,

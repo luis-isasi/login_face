@@ -39,7 +39,7 @@ async function fetcherApiFace<DataResponse>({
 
 const apiFace = {
   createNewPerson: ({ personId }: { personId: string }) => {
-    return fetcherApiFace({
+    return fetcherApiFace<{ personId: string }>({
       endpoint: `/persongroups/${PERSONS_GROUP}/persons`,
       method: 'POST',
       body: {

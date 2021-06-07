@@ -1,13 +1,18 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import UserForm from '@Components/UserForm';
-import Auth from '@Services/auth';
+import FormLogin from '@Components/FormUser/FormLogin';
 import Link from '@Components/Links/Link';
+import { UserResponse } from '@Types';
+import VerifyIdentity from './components/VerifyIdentity';
 
 const Login = () => {
   const router = useRouter();
+  const [userData, setUserData] = useState<UserResponse | undefined>(undefined);
 
-  const onSuccess = () => {
+  const onSuccess = (user: UserResponse) => {
+    console.log({ user });
+    setUserData(user);
     router.push('/home');
   };
 
@@ -24,9 +29,16 @@ const Login = () => {
         <p className="text-white text-center mb-6">
           Que bueno verte otra vez :)
         </p>
-        <div className="min-w-0 w-full max-w-xs">
-          <UserForm typeForm="login" onSuccess={onSuccess} onError={onError} />
-        </div>
+        {!userData && (
+          <div className="min-w-0 w-full max-w-xs">
+            <FormLogin
+              typeForm="login"
+              onSuccess={onSuccess}
+              onError={onError}
+            />
+          </div>
+        )}
+        {userData && <VerifyIdentity />}
         <div className="mt-5">
           <span className="text-white text-xs">
             ¿Aún no tienes una cuenta?
