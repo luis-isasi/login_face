@@ -7,7 +7,7 @@ interface Props {
 const LinkPrimaryBorder: React.FC<Props> = ({ href, children }) => {
   return (
     <Link
-      className={` cursor-pointer bg-purple-600 text-white rounded-md py-3  px-7 lg:px-9 font-extrabold  hover:bg-primary-light lg:hover:bg-purple-500`}
+      className={`cursor-pointer bg-purple-600 hover:bg-purple-500 text-white rounded-md py-3 px-7 lg:px-9 font-extrabold`}
       href={href}
     >
       {children}

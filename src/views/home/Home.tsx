@@ -1,4 +1,5 @@
 import { useContextAuth } from '@Context/contextAuth';
+import BtnPrimary from '@Components/Buttons/BtnPrimary';
 
 const Home = () => {
   const { user, signoutUser } = useContextAuth();
@@ -27,16 +28,11 @@ const Home = () => {
             rel="noreferrer"
             className="py-2 px-4 rounded-md outline-none text-purple-400"
           >
-            Login Face
+            Repositorio
           </a>
           👈
         </p>
-        <button
-          onClick={handleOnClick}
-          className="bg-green-500 hover:bg-green-400 text-white font-bold transition-colors duration-200 py-2 px-4 rounded-md outline-none"
-        >
-          Cerrar sesión
-        </button>
+        <BtnPrimary onClick={handleOnClick}>Cerrar sesión</BtnPrimary>
       </div>
     </div>
   );

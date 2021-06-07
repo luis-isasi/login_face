@@ -2,13 +2,13 @@ interface Props {
   onClick?: () => void;
 }
 
-const BtnPrimary: React.FC<Props> = ({ onClick }) => {
+const BtnPrimary: React.FC<Props> = ({ onClick, children }) => {
   return (
     <button
       onClick={onClick}
-      className="bg-green-500 hover:bg-green-400 text-white font-bold transition-colors duration-200 py-2 px-4 rounded-md outline-none"
+      className="cursor-pointer bg-purple-600 hover:bg-purple-500 text-white rounded-md py-3 px-7 lg:px-9 font-extrabold"
     >
-      Cerrar sesión
+      {children}
     </button>
   );
 };
