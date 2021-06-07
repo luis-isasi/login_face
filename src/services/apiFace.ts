@@ -38,6 +38,15 @@ async function fetcherApiFace<DataResponse>({
 }
 
 const apiFace = {
+  detectedFace: ({ url }: { url: string }) => {
+    return fetcherApiFace<[{ faceId: string }]>({
+      endpoint: '/detect?recognitionModel=recognition_03',
+      method: 'POST',
+      body: {
+        url,
+      },
+    });
+  },
   verifyIdentity: ({
     faceId,
     personId,
@@ -45,7 +54,7 @@ const apiFace = {
     faceId: string;
     personId: string;
   }) => {
-    return fetcherApiFace({
+    return fetcherApiFace<{ confidence: number; isIdentical: boolean }>({
       endpoint: '/verify',
       method: 'POST',
       body: {
