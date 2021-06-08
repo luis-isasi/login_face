@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
       <div className="text-white box-border p-5 mx-auto container md:max-w-xl xl:max-w-5xl h-auto flex flex-col items-center">
-        <span className="text-3xl xl:text-5xl text-center my-5 font-extrabold">
+        <span className="text-3xl md:text-4xl xl:text-5xl text-center my-5 font-extrabold">
           - My Face Detector -
         </span>
         <p className="text-center text-lg my-8">

@@ -49,8 +49,13 @@ const FormLogin: React.FC<PropsFormUser> = ({
 }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
 
-  const { isLoading, mutate: mutateCreatePerson } = useMutation(
-    'createNewPerson',
+  const {
+    isError,
+    isLoading,
+    error,
+    mutate: mutateLogin,
+  } = useMutation(
+    typeForm,
     () =>
       Auth.loginUser({ usuario: state.nameUser, contraseña: state.password }),
     {
@@ -70,8 +75,7 @@ const FormLogin: React.FC<PropsFormUser> = ({
       newState: 'LOADING',
     });
 
-    //create a new person
-    mutateCreatePerson();
+    mutateLogin();
   };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,6 +167,11 @@ const FormLogin: React.FC<PropsFormUser> = ({
         onChange={handleChangeInput}
         errorMessage={state.errors.password}
       />
+      {isError && (
+        <span className="text-center my-2 text-red-500 font-bold">
+          {`${error?.message}`}
+        </span>
+      )}
       <Btn isDisabled={handleOnSubmitDisabled() || isLoading} />
     </form>
   );
