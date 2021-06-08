@@ -21,8 +21,6 @@ export const ContextAuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  console.log({ user });
-
   useEffect(() => {
     const user: UserLocalStorage = JSON.parse(
       localStorage.getItem(USER_SESSION)

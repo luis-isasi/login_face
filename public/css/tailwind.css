@@ -30,4 +30,5 @@
 
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: rgba(24, 27, 50, 1) !important;
 }
