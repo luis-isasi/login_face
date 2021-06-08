@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Webcam from 'react-webcam';
 import { useMutation } from 'react-query';
 
-import ApiFace from '@Services/apiFace';
+import ApiFace, { ResDetectFace, ResVerifyIdentity } from '@Services/apiFace';
 import { uploadImage } from '../../../firebase/client';
 
 const videoConstraints = {
@@ -28,30 +28,40 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
     isLoading: isLoadingDetectFace,
     error: errorDetectFace,
     mutate: detectFace,
-  } = useMutation(() => ApiFace.detectedFace({ url: imgUrl }), {
-    onSuccess: (data) => {
-      if (data[0]) {
-        setFaceId(data[0].faceId);
-      } else {
-        setErrorMessage('No se ha detectado un rosto.');
-      }
-    },
-  });
+  } = useMutation<[ResDetectFace], { message: string }>(
+    () => ApiFace.detectedFace({ url: imgUrl }),
+    {
+      onSuccess: (data) => {
+        if (data[0]) {
+          setFaceId(data[0].faceId);
+        } else {
+          setErrorMessage('No se ha detectado un rosto.');
+        }
+      },
+    }
+  );
 
   const {
     isLoading: isLoadingVerifyIdentity,
     error: errorVerifyIdentity,
     isSuccess: isSuccessVerifyIdentity,
     mutate: verifyFace,
-  } = useMutation(() => ApiFace.verifyIdentity({ faceId, personId }), {
-    onSuccess: (data) => {
-      if (data.isIdentical) {
-        onSuccess();
-      } else {
-        setErrorMessage('Tu rostro no coincide 😕');
-      }
-    },
-  });
+  } = useMutation<ResVerifyIdentity, { message: string }>(
+    () =>
+      ApiFace.verifyIdentity({
+        faceId,
+        personId,
+      }),
+    {
+      onSuccess: (data) => {
+        if (data.isIdentical) {
+          onSuccess();
+        } else {
+          setErrorMessage('Tu rostro no coincide 😕');
+        }
+      },
+    }
+  );
 
   //Verify Face
   useEffect(() => {

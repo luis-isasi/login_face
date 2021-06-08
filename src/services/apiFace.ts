@@ -31,15 +31,33 @@ async function fetcherApiFace<DataResponse>({
   //no necesitamos retornar todo el objeto de error ya que react-query solo necesita el mensaje de error
   //quizas en otro proyecto sin react-query, si, se deba retornar
   if (!response.ok) {
-    throw new Error(res.error.message);
+    const error: { message: string } = res.error;
+    throw new Error(error.message);
   }
 
   return res as DataResponse;
 }
 
+export interface ResDetectFace {
+  faceId: string;
+}
+
+export interface ResVerifyIdentity {
+  confidence: number;
+  isIdentical: boolean;
+}
+
+export interface ResCreatePerson {
+  personId: string;
+}
+
+export interface ResAddImgToPerson {
+  persistedFaceId: string;
+}
+
 const apiFace = {
   detectedFace: ({ url }: { url: string }) => {
-    return fetcherApiFace<[{ faceId: string }]>({
+    return fetcherApiFace<[ResDetectFace]>({
       endpoint: '/detect?recognitionModel=recognition_03',
       method: 'POST',
       body: {
@@ -54,7 +72,7 @@ const apiFace = {
     faceId: string;
     personId: string;
   }) => {
-    return fetcherApiFace<{ confidence: number; isIdentical: boolean }>({
+    return fetcherApiFace<ResVerifyIdentity>({
       endpoint: '/verify',
       method: 'POST',
       body: {
@@ -65,7 +83,7 @@ const apiFace = {
     });
   },
   createNewPerson: ({ personId }: { personId: string }) => {
-    return fetcherApiFace<{ personId: string }>({
+    return fetcherApiFace<ResCreatePerson>({
       endpoint: `/persongroups/${PERSONS_GROUP}/persons`,
       method: 'POST',
       body: {
@@ -75,7 +93,7 @@ const apiFace = {
     });
   },
   addImgToPerson: ({ url, personId }: { url: string; personId: string }) => {
-    return fetcherApiFace<{ persistedFaceId: string }>({
+    return fetcherApiFace<ResAddImgToPerson>({
       endpoint: `/persongroups/${PERSONS_GROUP}/persons/${personId}/persistedFaces`,
       method: 'POST',
       body: {

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Webcam from 'react-webcam';
 import { useMutation } from 'react-query';
 
-import ApiFace from '@Services/apiFace';
+import ApiFace, { ResAddImgToPerson } from '@Services/apiFace';
 import { uploadImage } from '../../../firebase/client';
 
 const videoConstraints = {
@@ -29,7 +29,9 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
     isError,
     mutate: addImgToPerson,
     error,
-  } = useMutation(() => ApiFace.addImgToPerson({ url: imgUrl, personId }));
+  } = useMutation<ResAddImgToPerson, { message: string }>(() =>
+    ApiFace.addImgToPerson({ url: imgUrl, personId })
+  );
 
   useEffect(() => {
     if (data && !isLoading && !isError) {

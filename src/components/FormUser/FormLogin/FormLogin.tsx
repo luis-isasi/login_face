@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import Auth from '@Services/auth';
 import FormField from './components/FormField';
 import Btn from './components/Btn';
+import { UserResponse } from '@Types';
 import { PropsFormUser, InitialState, FormAction } from './types';
 
 const initialState: InitialState = {
@@ -54,7 +55,7 @@ const FormLogin: React.FC<PropsFormUser> = ({
     isLoading,
     error,
     mutate: mutateLogin,
-  } = useMutation(
+  } = useMutation<UserResponse, { message: string }>(
     typeForm,
     () =>
       Auth.loginUser({ usuario: state.nameUser, contraseña: state.password }),
