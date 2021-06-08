@@ -123,7 +123,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
       <div className="bg-gray-300 my-2 h-auto w-full rounded-md overflow-hidden">
         <Webcam
           audio={false}
-          height={720}
+          height={300}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
           width={1280}
