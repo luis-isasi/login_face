@@ -120,7 +120,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
       >
         Capturar Rostro
       </button>
-      <div className="bg-yellow-300 my-2 h-auto w-full rounded-md overflow-hidden">
+      <div className="bg-gray-300 my-2 h-auto w-full rounded-md overflow-hidden">
         <Webcam
           audio={false}
           height={720}

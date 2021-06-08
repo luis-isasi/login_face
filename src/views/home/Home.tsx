@@ -17,9 +17,9 @@ const Home = () => {
         <p className="text-center text-lg my-8">
           Estoy encantado de que hayas probado mi sistema de registro e inicio
           de sesión con reconocimiento facial, esperamos que sea de tu agrado.
-          😁😁😁😁😁😁
+          😀😃😃
         </p>
-        <p className="text-lg">Puedes ver el repositorio aquí 😄😄😄😄</p>
+        <p className="text-lg"> 😄 Puedes ver el repositorio aquí 😄</p>
         <p className="text-xl my-8">
           👉
           <a
