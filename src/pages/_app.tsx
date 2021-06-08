@@ -1,6 +1,7 @@
 import { AppProps } from 'next/app';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ContextAuthProvider } from '@Context/contextAuth';
+import ProtectRouteAuth from '@Hoc/ProtectRouteAuth';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   const client = new QueryClient();
@@ -8,7 +9,13 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={client}>
       <ContextAuthProvider>
-        <Component {...pageProps} />
+        {pageProps.requireAuth ? (
+          <ProtectRouteAuth>
+            <Component {...pageProps} />
+          </ProtectRouteAuth>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </ContextAuthProvider>
     </QueryClientProvider>
   );

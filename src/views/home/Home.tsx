@@ -38,4 +38,12 @@ const Home = () => {
   );
 };
 
+export const getServerSideProps = () => {
+  return {
+    props: {
+      requireAuth: true,
+    },
+  };
+};
+
 export default Home;
