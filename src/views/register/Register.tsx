@@ -35,7 +35,7 @@ const Register = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="w-screen min-h-screen h-auto flex justify-center items-center">
       <div className="w-96 h-auto box-border px-4 sm:px-0 flex flex-col items-center">
         <p className="text-white font-extrabold text-4xl py-4">Únete :D</p>
         {stepRegister === 1 && (

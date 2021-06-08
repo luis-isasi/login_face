@@ -30,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="w-screen min-h-screen h-auto flex justify-center items-center">
       <div className="w-96 box-border px-4 sm:px-0 flex flex-col items-center">
         <p className="text-white font-extrabold w-full text-center text-2xl sm:text-4xl mb-1">
           Bienvenido de vuelta
