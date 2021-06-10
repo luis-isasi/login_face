@@ -6,8 +6,8 @@ import ApiFace, { ResDetectFace, ResVerifyIdentity } from '@Services/apiFace';
 import { uploadImage } from '../../../firebase/client';
 
 const videoConstraints = {
-  width: 1280,
-  height: 720,
+  width: 720,
+  height: 320,
   facingMode: 'user',
 };
 
@@ -95,8 +95,10 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
   //capture the image in base64
   const onCapture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot({
-      width: 1920,
-      height: 1080,
+      // width: 1920,
+      // height: 1080,
+      width: 720,
+      height: 320,
     });
 
     //convert img to file
