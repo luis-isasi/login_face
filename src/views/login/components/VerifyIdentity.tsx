@@ -98,7 +98,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
       // width: 1920,
       // height: 1080,
       width: 720,
-      height: 320,
+      height: 480,
     });
 
     //convert img to file
@@ -125,7 +125,7 @@ const VerifyIdentity: React.FC<Props> = ({ personId, onSuccess }) => {
       <div className="bg-gray-300 my-2 h-auto w-full rounded-md overflow-hidden">
         <Webcam
           audio={false}
-          height={300}
+          height={720}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
           width={1280}
